@@ -1,0 +1,146 @@
+<div class="layui-tab layui-tab-fixed layui-tab-brief">
+  <ul class="layui-tab-title">
+    <li class="layui-this">配置</li>
+  </ul>
+  <div class="layui-tab-content">
+    <div class="layui-tab-item layui-show">
+    	<form class="layui-form editor-form-node">
+			<div class="layui-row">
+				<!-- 节点名称 -->
+				<div class="layui-col-md4">
+					<div class="layui-form-item">
+						<label class="layui-form-label">节点名称</label>
+						<div class="layui-input-block">
+							<input type="text" name="value" placeholder="请输入节点名称" value="{{=d.value}}" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+				</div>
+
+				<!-- 操作类型 -->
+				<div class="layui-col-md4">
+					<div class="layui-form-item">
+						<label class="layui-form-label">操作类型</label>
+						<div class="layui-input-block">
+							<select name="operation-type" id="cache-operation-type">
+								<option value="SET" {{=d.data.object["operation-type"] == "SET" ? 'selected' : ''}}>设置缓存</option>
+								<option value="GET" {{=d.data.object["operation-type"] == "GET" ? 'selected' : ''}}>获取缓存</option>
+								<option value="REMOVE" {{=d.data.object["operation-type"] == "REMOVE" ? 'selected' : ''}}>移除缓存</option>
+								<option value="CLEAR" {{=d.data.object["operation-type"] == "CLEAR" ? 'selected' : ''}}>清除所有缓存</option>
+							</select>
+						</div>
+					</div>
+				</div>
+
+				<!-- 缓存类型 -->
+				<div class="layui-col-md4">
+					<div class="layui-form-item">
+						<label class="layui-form-label">缓存类型</label>
+						<div class="layui-input-block">
+							<select name="cache-type">
+								<option value="LOCAL" {{=d.data.object["cache-type"] == "LOCAL" ? 'selected' : ''}}>本地缓存</option>
+								<option value="REDIS" {{=d.data.object["cache-type"] == "REDIS" ? 'selected' : ''}}>Redis缓存</option>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- 缓存键 -->
+			<div class="layui-form-item cache-key-section">
+				<label class="layui-form-label">缓存键</label>
+				<div class="layui-input-block">
+					<input type="text" name="cache-key" placeholder="请输入缓存键" value="{{=d.data.object["cache-key"]}}" autocomplete="off" class="layui-input">
+				</div>
+			</div>
+
+			<!-- 缓存值（仅SET操作显示） -->
+			<div class="layui-form-item cache-value-section">
+				<label class="layui-form-label">缓存值</label>
+				<div class="layui-input-block">
+					<div codemirror="cache-value" placeholder="请输入缓存值" data-value="{{=d.data.object["cache-value"]}}"></div>
+				</div>
+			</div>
+
+			<div class="layui-row">
+				<!-- 过期时间（仅SET操作显示） -->
+				<div class="layui-col-md4 cache-expire-section">
+					<div class="layui-form-item">
+						<label class="layui-form-label">过期时间</label>
+						<div class="layui-input-block">
+							<input type="number" name="expire-time" placeholder="0表示永久" value="{{=d.data.object["expire-time"] || 0}}" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+				</div>
+
+				<!-- 时间单位（仅SET操作显示） -->
+				<div class="layui-col-md4 cache-timeunit-section">
+					<div class="layui-form-item">
+						<label class="layui-form-label">时间单位</label>
+						<div class="layui-input-block">
+							<select name="time-unit">
+								<option value="MILLISECONDS" {{=d.data.object["time-unit"] == "MILLISECONDS" ? 'selected' : ''}}>毫秒</option>
+								<option value="SECONDS" {{=d.data.object["time-unit"] == "SECONDS" ? 'selected' : ''}}>秒</option>
+								<option value="MINUTES" {{=d.data.object["time-unit"] == "MINUTES" ? 'selected' : ''}}>分钟</option>
+								<option value="HOURS" {{=d.data.object["time-unit"] == "HOURS" ? 'selected' : ''}}>小时</option>
+								<option value="DAYS" {{=d.data.object["time-unit"] == "DAYS" ? 'selected' : ''}}>天</option>
+							</select>
+						</div>
+					</div>
+				</div>
+
+				<!-- 目标变量（仅GET操作显示） -->
+				<div class="layui-col-md4 cache-target-section">
+					<div class="layui-form-item">
+						<label class="layui-form-label">目标变量</label>
+						<div class="layui-input-block">
+							<input type="text" name="target-variable" placeholder="缓存结果存储的变量名" value="{{=d.data.object["target-variable"] || "cacheResult"}}" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+				</div>
+			</div>
+    	</form>
+    </div>
+  </div>
+</div>
+
+<script>
+	$(function(){
+		// 根据操作类型显示/隐藏不同的配置项
+		function toggleSections() {
+			var operationType = $('#cache-operation-type').val();
+			
+			// 显示/隐藏缓存键
+			if (operationType === 'CLEAR') {
+				$('.cache-key-section').hide();
+			} else {
+				$('.cache-key-section').show();
+			}
+			
+			// 显示/隐藏缓存值、过期时间和时间单位
+			if (operationType === 'SET') {
+				$('.cache-value-section').show();
+				$('.cache-expire-section').show();
+				$('.cache-timeunit-section').show();
+			} else {
+				$('.cache-value-section').hide();
+				$('.cache-expire-section').hide();
+				$('.cache-timeunit-section').hide();
+			}
+			
+			// 显示/隐藏目标变量
+			if (operationType === 'GET') {
+				$('.cache-target-section').show();
+			} else {
+				$('.cache-target-section').hide();
+			}
+		}
+		
+		// 初始化显示/隐藏
+		toggleSections();
+		
+		// 监听操作类型变化
+		$('#cache-operation-type').on('change', function() {
+			toggleSections();
+		});
+	});
+</script>

@@ -17,5 +17,11 @@
 			<groupId>org.spiderflow</groupId>
 			<artifactId>spider-flow-api</artifactId>
 		</dependency>
+		<!-- Redis客户端依赖 -->
+		<dependency>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+			<version>3.3.0</version>
+		</dependency>
 	</dependencies>
 </project>
