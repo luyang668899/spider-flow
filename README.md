@@ -7,7 +7,7 @@
     <a target="_blank" href="https://github.com/ssssssss-team/spider-flow/releases"><img src="https://img.shields.io/github/v/release/ssssssss-team/spider-flow?logo=github"></a>
     <a target="_blank" href='https://gitee.com/ssssssss-team/spider-flow'><img src="https://gitee.com/ssssssss-team/spider-flow/badge/star.svg?theme=white" /></a>
     <a target="_blank" href='https://github.com/ssssssss-team/spider-flow'><img src="https://img.shields.io/github/stars/ssssssss-team/spider-flow.svg?style=social"/></a>
-    <a target="_blank" href="LICENSE"><img src="https://img.shields.io/:license-MIT-blue.svg"></a>
+    <a target="_blank" href="LICENSE"><img src="https://img.shields.io/:license-Apache%202.0-blue.svg"></a>
     <a target="_blank" href="https://shang.qq.com/wpa/qunwpa?idkey=10faa4cf9743e0aa379a72f2ad12a9e576c81462742143c8f3391b52e8c3ed8d"><img src="https://img.shields.io/badge/Join-QQGroup-blue"></a>
 </p>
 
@@ -29,6 +29,7 @@
 - [x] 支持HTTP接口
 - [x] 支持Cookie自动管理
 - [x] 支持自定义函数
+- [x] 内置缓存策略
 
 ## 插件
 - [x] [Selenium插件](https://gitee.com/ssssssss-team/spider-flow-selenium)
